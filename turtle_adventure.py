@@ -484,10 +484,6 @@ class EnemyGenerator:
         Create a new enemy, possibly based on the game level
         """
         for _ in range(3):
-            fencing_enemy = FencingEnemy(self.game, 20, "pink", speed=2.5)
-            fencing_enemy.x = self.game.home.x
-            fencing_enemy.y = self.game.home.y - 40
-            self.game.add_element(fencing_enemy)
             custom_enemy = CustomEnemy(self.game, 20, "orange")
             custom_enemy.x = random.randint(0, self.game.screen_width)
             custom_enemy.y = random.randint(0, self.game.screen_height)
@@ -496,6 +492,10 @@ class EnemyGenerator:
             random_walk_enemy.x = random.randint(100, self.game.screen_width)
             random_walk_enemy.y = random.randint(100, self.game.screen_height)
             self.game.add_element(random_walk_enemy)
+        fencing_enemy = FencingEnemy(self.game, 25, "pink", speed=2.5)
+        fencing_enemy.x = self.game.home.x
+        fencing_enemy.y = self.game.home.y - 40
+        self.game.add_element(fencing_enemy)
         chasing_enemy = ChasingEnemy(self.game, 30, "blue", speed=2.5)
         chasing_enemy.x = random.randint(100, self.game.screen_width)
         chasing_enemy.y = random.randint(100, self.game.screen_height)
