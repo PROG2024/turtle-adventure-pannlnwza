@@ -7,7 +7,6 @@ from turtle import RawTurtle
 from gamelib import Game, GameElement
 
 
-
 class TurtleGameElement(GameElement):
     """
     An abstract class representing all game elemnets related to the Turtle's
@@ -484,56 +483,27 @@ class EnemyGenerator:
         """
         Create a new enemy, possibly based on the game level
         """
-        if self.level == 1:
-            for _ in range(5):
-                custom_enemy = CustomEnemy(self.game, 20, "orange")
-                custom_enemy.x = random.randint(0, self.game.screen_width)
-                custom_enemy.y = random.randint(0, self.game.screen_height)
-                self.game.add_element(custom_enemy)
-                random_walk_enemy = RandomWalkEnemy(self.game, 20, "yellow", speed=2)
-                random_walk_enemy.x = random.randint(100, self.game.screen_width)
-                random_walk_enemy.y = random.randint(100, self.game.screen_height)
-                self.game.add_element(random_walk_enemy)
-        elif self.level == 2:
-            for _ in range(3):
-                random_walk_enemy = RandomWalkEnemy(self.game, 20, "yellow", speed=3)
-                random_walk_enemy.x = random.randint(100, self.game.screen_width)
-                random_walk_enemy.y = random.randint(100, self.game.screen_height)
-                self.game.add_element(random_walk_enemy)
-                custom_enemy = CustomEnemy(self.game, 20, "orange")
-                custom_enemy.x = random.randint(0, self.game.screen_width)
-                custom_enemy.y = random.randint(0, self.game.screen_height)
-                self.game.add_element(custom_enemy)
-            fencing_enemy = FencingEnemy(self.game, 15, "pink", speed=2)
+        for _ in range(3):
+            fencing_enemy = FencingEnemy(self.game, 20, "pink", speed=2.5)
             fencing_enemy.x = self.game.home.x
             fencing_enemy.y = self.game.home.y - 40
             self.game.add_element(fencing_enemy)
-            chasing_enemy = ChasingEnemy(self.game, 20, "blue", speed=1.5)
-            chasing_enemy.x = random.randint(100, self.game.screen_width)
-            chasing_enemy.y = random.randint(100, self.game.screen_height)
-            self.game.add_element(chasing_enemy)
-        elif self.level == 3:
-            for _ in range(5):
-                fencing_enemy = FencingEnemy(self.game, 20, "pink", speed=2.5)
-                fencing_enemy.x = self.game.home.x
-                fencing_enemy.y = self.game.home.y - 40
-                self.game.add_element(fencing_enemy)
-                custom_enemy = CustomEnemy(self.game, 20, "orange")
-                custom_enemy.x = random.randint(0, self.game.screen_width)
-                custom_enemy.y = random.randint(0, self.game.screen_height)
-                self.game.add_element(custom_enemy)
-                random_walk_enemy = RandomWalkEnemy(self.game, 25, "yellow", speed=3)
-                random_walk_enemy.x = random.randint(100, self.game.screen_width)
-                random_walk_enemy.y = random.randint(100, self.game.screen_height)
-                self.game.add_element(random_walk_enemy)
-            chasing_enemy = ChasingEnemy(self.game, 30, "blue", speed=2.5)
-            chasing_enemy.x = random.randint(100, self.game.screen_width)
-            chasing_enemy.y = random.randint(100, self.game.screen_height)
-            self.game.add_element(chasing_enemy)
-            chasing_enemy = ChasingEnemy(self.game, 20, "blue", speed=1.5)
-            chasing_enemy.x = random.randint(100, self.game.screen_width)
-            chasing_enemy.y = random.randint(100, self.game.screen_height)
-            self.game.add_element(chasing_enemy)
+            custom_enemy = CustomEnemy(self.game, 20, "orange")
+            custom_enemy.x = random.randint(0, self.game.screen_width)
+            custom_enemy.y = random.randint(0, self.game.screen_height)
+            self.game.add_element(custom_enemy)
+            random_walk_enemy = RandomWalkEnemy(self.game, 25, "yellow", speed=3)
+            random_walk_enemy.x = random.randint(100, self.game.screen_width)
+            random_walk_enemy.y = random.randint(100, self.game.screen_height)
+            self.game.add_element(random_walk_enemy)
+        chasing_enemy = ChasingEnemy(self.game, 30, "blue", speed=2.5)
+        chasing_enemy.x = random.randint(100, self.game.screen_width)
+        chasing_enemy.y = random.randint(100, self.game.screen_height)
+        self.game.add_element(chasing_enemy)
+        chasing_enemy = ChasingEnemy(self.game, 20, "blue", speed=1.5)
+        chasing_enemy.x = random.randint(100, self.game.screen_width)
+        chasing_enemy.y = random.randint(100, self.game.screen_height)
+        self.game.add_element(chasing_enemy)
 
 
 class TurtleAdventureGame(Game): # pylint: disable=too-many-ancestors
