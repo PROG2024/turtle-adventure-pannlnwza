@@ -225,6 +225,10 @@ class Enemy(TurtleGameElement):
         """
         return self.__size
 
+    @size.setter
+    def size(self, add):
+        self.__size += add
+
     @property
     def color(self) -> str:
         """
@@ -426,10 +430,12 @@ class CustomEnemy(Enemy):
         self.x += self.__x_direction * 2
         if self.x <= 0 or self.x >= self.game.screen_width:
             self.__x_direction *= -1
+            self.size += 1
 
         self.y += self.__y_direction * 2
         if self.y <= 0 or self.y >= self.game.screen_height:
             self.__y_direction *= -1
+            self.size += 1
 
         if self.hits_player():
             self.game.game_over_lose()
@@ -483,26 +489,26 @@ class EnemyGenerator:
         """
         Create a new enemy, possibly based on the game level
         """
-        for _ in range(3):
+        for _ in range(5):
             custom_enemy = CustomEnemy(self.game, 20, "orange")
             custom_enemy.x = random.randint(0, self.game.screen_width)
             custom_enemy.y = random.randint(0, self.game.screen_height)
             self.game.add_element(custom_enemy)
             random_walk_enemy = RandomWalkEnemy(self.game, 25, "yellow", speed=3)
-            random_walk_enemy.x = random.randint(100, self.game.screen_width)
-            random_walk_enemy.y = random.randint(100, self.game.screen_height)
+            random_walk_enemy.x = random.randint(200, self.game.screen_width)
+            random_walk_enemy.y = random.randint(200, self.game.screen_height)
             self.game.add_element(random_walk_enemy)
         fencing_enemy = FencingEnemy(self.game, 25, "pink", speed=2.5)
         fencing_enemy.x = self.game.home.x
         fencing_enemy.y = self.game.home.y - 40
         self.game.add_element(fencing_enemy)
-        chasing_enemy = ChasingEnemy(self.game, 30, "blue", speed=2.5)
-        chasing_enemy.x = random.randint(100, self.game.screen_width)
-        chasing_enemy.y = random.randint(100, self.game.screen_height)
+        chasing_enemy = ChasingEnemy(self.game, 30, "aqua", speed=2.5)
+        chasing_enemy.x = random.randint(300, self.game.screen_width)
+        chasing_enemy.y = random.randint(300, self.game.screen_height)
         self.game.add_element(chasing_enemy)
-        chasing_enemy = ChasingEnemy(self.game, 20, "blue", speed=1.5)
-        chasing_enemy.x = random.randint(100, self.game.screen_width)
-        chasing_enemy.y = random.randint(100, self.game.screen_height)
+        chasing_enemy = ChasingEnemy(self.game, 20, "aqua", speed=1.5)
+        chasing_enemy.x = random.randint(300, self.game.screen_width)
+        chasing_enemy.y = random.randint(300, self.game.screen_height)
         self.game.add_element(chasing_enemy)
 
 
