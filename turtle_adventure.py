@@ -288,7 +288,7 @@ class RandomWalkEnemy(Enemy):
         self.speed = speed
 
     def create(self) -> None:
-        self.__id = self.canvas.create_oval(0, 0, 0, 0, fill=self.color)
+        self.__id = self.canvas.create_rectangle(0, 0, 0, 0, fill=self.color)
 
     def update(self) -> None:
         self.x += self.__direction[0] * self.speed
@@ -328,38 +328,29 @@ class FencingEnemy(Enemy):
     Enemy that walks around the home in a square-like pattern.
     """
 
-    def __init__(self, game: "TurtleAdventureGame", size: int, color: str, speed: float = 1):
+    def __init__(self, game: "TurtleAdventureGame", size: int, color: str, speed: float = 1, square_mul: int = 40):
         super().__init__(game, size, color)
         self.__id = None
-        self.__step = 0
+        self.square_size = square_mul
         self.__speed = speed
 
     def create(self) -> None:
         self.__id = self.canvas.create_oval(0, 0, 0, 0, fill=self.color)
 
     def update(self) -> None:
-        square_size = 40
 
-        vertices = [
-            (self.game.home.x - square_size, self.game.home.y - square_size),
-            (self.game.home.x - square_size, self.game.home.y + square_size),
-            (self.game.home.x + square_size, self.game.home.y + square_size),
-            (self.game.home.x + square_size, self.game.home.y - square_size)
-        ]
-
-        # Move the enemy along the edges of the square
-        target_x, target_y = vertices[self.__step]
-        if self.x < target_x:
+        if (self.x < self.game.home.x + self.square_size
+                and self.y == self.game.home.y - self.square_size):
             self.x += self.__speed
-        elif self.x > target_x:
-            self.x -= self.__speed
-        if self.y < target_y:
+        elif (self.x == self.game.home.x + self.square_size
+              and self.y < self.game.home.y + self.square_size):
             self.y += self.__speed
-        elif self.y > target_y:
+        elif (self.x > self.game.home.x - self.square_size
+              and self.y == self.game.home.y + self.square_size):
+            self.x -= self.__speed
+        elif (self.x == self.game.home.x - self.square_size
+              and self.y > self.game.home.y - self.square_size):
             self.y -= self.__speed
-
-        if (self.x, self.y) == (target_x, target_y):
-            self.__step = (self.__step + 1) % len(vertices)
 
         if self.hits_player():
             self.game.game_over_lose()
@@ -412,9 +403,9 @@ class ChasingEnemy(Enemy):
         self.canvas.delete(self.__id)
 
 
-class CustomEnemy(Enemy):
+class BiggerWhenBouncedEnemy(Enemy):
     """
-    Define a custom type of enemy that bounces off walls.
+    Enemy that will get bigger when it hits the wall.
     """
 
     def __init__(self, game: "TurtleAdventureGame", size: int, color: str):
@@ -490,25 +481,29 @@ class EnemyGenerator:
         Create a new enemy, possibly based on the game level
         """
         for _ in range(5):
-            custom_enemy = CustomEnemy(self.game, 20, "orange")
-            custom_enemy.x = random.randint(0, self.game.screen_width)
-            custom_enemy.y = random.randint(0, self.game.screen_height)
+            custom_enemy = BiggerWhenBouncedEnemy(self.game, 20, "orange")
+            custom_enemy.x = random.randint(100, self.game.screen_width)
+            custom_enemy.y = random.randint(100, self.game.screen_height)
             self.game.add_element(custom_enemy)
             random_walk_enemy = RandomWalkEnemy(self.game, 25, "yellow", speed=3)
-            random_walk_enemy.x = random.randint(200, self.game.screen_width)
-            random_walk_enemy.y = random.randint(200, self.game.screen_height)
+            random_walk_enemy.x = random.randint(100, self.game.screen_width)
+            random_walk_enemy.y = random.randint(100, self.game.screen_height)
             self.game.add_element(random_walk_enemy)
-        fencing_enemy = FencingEnemy(self.game, 25, "pink", speed=2.5)
+        fencing_enemy = FencingEnemy(self.game, 15, "pink", speed=5, square_mul=40)
         fencing_enemy.x = self.game.home.x
         fencing_enemy.y = self.game.home.y - 40
         self.game.add_element(fencing_enemy)
+        fencing_enemy2 = FencingEnemy(self.game, 25, "pink", speed=5, square_mul=70)
+        fencing_enemy2.x = self.game.home.x
+        fencing_enemy2.y = self.game.home.y - 70
+        self.game.add_element(fencing_enemy2)
         chasing_enemy = ChasingEnemy(self.game, 30, "aqua", speed=2.5)
-        chasing_enemy.x = random.randint(300, self.game.screen_width)
-        chasing_enemy.y = random.randint(300, self.game.screen_height)
+        chasing_enemy.x = random.randint(200, self.game.screen_width)
+        chasing_enemy.y = random.randint(200, self.game.screen_height)
         self.game.add_element(chasing_enemy)
         chasing_enemy = ChasingEnemy(self.game, 20, "aqua", speed=1.5)
-        chasing_enemy.x = random.randint(300, self.game.screen_width)
-        chasing_enemy.y = random.randint(300, self.game.screen_height)
+        chasing_enemy.x = random.randint(100, self.game.screen_width)
+        chasing_enemy.y = random.randint(100, self.game.screen_height)
         self.game.add_element(chasing_enemy)
 
 
